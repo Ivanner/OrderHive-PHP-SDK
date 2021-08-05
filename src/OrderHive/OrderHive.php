@@ -189,6 +189,14 @@ class OrderHive
      */
     public function put($cmd, array $params = [])
     {
+		$output = [];
+		if (strpos($cmd, '?') !== false) {
+			list($url, $querystring) = explode('?', $cmd);
+			parse_str($querystring, $output);
+		} else {
+			$url = $cmd;
+		}
+		$this->signRequest($url, 'PUT', $output, $params);
 	    $this->last_response = $this->client->put($cmd, $params);
 	    return $this->last_response;
     }
